@@ -10,9 +10,13 @@ function ViewProductPage() {
   const [product, setProduct] = useState([]);
 
   const getProduct = async () => {
-    const response = await axios.get(`http://localhost:4001/products/${param.productId}`);
-    setProduct(response.data.data);
-    console.log(response);
+    try {
+      const response = await axios.get(`http://localhost:4001/products/${param.productId}`);
+      setProduct(response.data.data);
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
   }
 
   useEffect(() => {

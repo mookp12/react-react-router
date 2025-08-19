@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
 
 
 function HomePage() {
@@ -32,8 +31,12 @@ function HomePage() {
   // }, [products]);
 
   const handleDelete = async (id) => {
+    try {
     const response = await axios.delete(`http://localhost:4001/products/${id}`);
     console.log(response);
+    } catch (error) {
+      alert(error)
+    }
   }
 
   return (

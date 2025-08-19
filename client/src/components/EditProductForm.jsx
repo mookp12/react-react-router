@@ -10,17 +10,21 @@ function EditProductForm() {
 
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(null);
   const [description, setDescription] = useState("");
 
   const getProduct = async () => {
-    const response = await axios.get(
-      `http://localhost:4001/products/${param.productId}`
-    );
-    setName(response.data.data.name);
-    setImage(response.data.data.image);
-    setPrice(response.data.data.price);
-    setDescription(response.data.data.description);
+    try {
+      const response = await axios.get(
+        `http://localhost:4001/products/${param.productId}`
+      );
+      setName(response.data.data.name);
+      setImage(response.data.data.image);
+      setPrice(response.data.data.price);
+      setDescription(response.data.data.description);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   useEffect(() => {
@@ -30,24 +34,33 @@ function EditProductForm() {
   const updateProduct = async (e) => {
     e.preventDefault();
     if (name && image && price && description) {
-      const response = await axios.put(
-        `http://localhost:4001/products/${param.productId}`,
-        {
-          "name": name,
-          "image": image,
-          "price": price,
-          "description": description,
-        }
-      );
-      console.log(response);
-      navigate("/");
+      try {
+        const response = await axios.put(
+          `http://localhost:4001/products/${param.productId}`,
+          {
+            name: name,
+            image: image,
+            price: price,
+            description: description,
+          }
+        );
+
+        console.log(response);
+        navigate("/");
+      } catch (error) {
+        alert(error);
+      }
     } else {
       alert("Please fill in all fields");
     }
   };
 
   return (
-    <form className="product-form" key={param.productId} onSubmit={updateProduct}>
+    <form
+      className="product-form"
+      key={param.productId}
+      onSubmit={updateProduct}
+    >
       <h1>Edit Product Form</h1>
       <div className="input-container">
         <label>

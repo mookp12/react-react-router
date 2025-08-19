@@ -3,40 +3,38 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function CreateProductForm() {
-
   const navigate = useNavigate();
 
-  const [name,setName] = useState("");
-  const [image,setImage] = useState("");
-  const [price,setPrice] = useState("");
-  const [description,setDescription] = useState("");
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+  const [price, setPrice] = useState(null);
+  const [description, setDescription] = useState("");
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = (e) => {
+    // e.preventDefault();
 
-  if (name && image && price && description) {
-    try {
-      await CreateProduct();
+    if (name && image && price && description) {
+      CreateProduct();
       navigate("/");
-    } catch (error) {
-      console.error("Error creating product:", error);
-      alert("Failed to create product. Please try again.");
+    } else {
+      e.preventDefault();
+      alert("Please fill in all fields");
     }
-  } else {
-    alert("Please fill in all fields");
-  }
-}
+  };
 
-
-const CreateProduct = async () => {
-  const response = await axios.post("http://localhost:4001/products",{
-    "name": name,
-    "price": price,
-    "image": image,
-    "description": description
-  });
-  console.log(response);
-}
+  const CreateProduct = async () => {
+    try {
+      const response = await axios.post("http://localhost:4001/products", {
+        name: name,
+        price: price,
+        image: image,
+        description: description,
+      });
+      console.log(response);
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   return (
     <form className="product-form" onSubmit={handleSubmit}>
@@ -50,7 +48,9 @@ const CreateProduct = async () => {
             type="text"
             value={name}
             placeholder="Enter name here"
-            onChange={(e) => {setName(e.target.value)}}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
           />
         </label>
       </div>
@@ -63,7 +63,9 @@ const CreateProduct = async () => {
             type="text"
             value={image}
             placeholder="Enter image url here"
-            onChange={(e) => {setImage(e.target.value)}}
+            onChange={(e) => {
+              setImage(e.target.value);
+            }}
           />
         </label>
       </div>
@@ -76,7 +78,9 @@ const CreateProduct = async () => {
             type="number"
             value={price}
             placeholder="Enter price here"
-            onChange={(e) => {setPrice(e.target.value)}}
+            onChange={(e) => {
+              setPrice(e.target.value);
+            }}
           />
         </label>
       </div>
@@ -88,7 +92,9 @@ const CreateProduct = async () => {
             name="description"
             type="text"
             placeholder="Enter description here"
-            onChange={(e) => {setDescription(e.target.value)}}
+            onChange={(e) => {
+              setDescription(e.target.value);
+            }}
             value={description}
             rows={4}
             cols={30}

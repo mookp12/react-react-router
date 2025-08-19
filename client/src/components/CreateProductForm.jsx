@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 function CreateProductForm() {
+
+  const navigate = useNavigate()
   return (
     <form className="product-form">
       <h1>Create Product Form</h1>
@@ -53,7 +57,7 @@ function CreateProductForm() {
         </label>
       </div>
       <div className="form-actions">
-        <button type="submit">Create</button>
+        <button onClick={()=>navigate("/")} type="submit">Create</button>
       </div>
     </form>
   );

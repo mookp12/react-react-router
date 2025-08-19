@@ -7,9 +7,19 @@ function EditProductForm() {
   const [product, setProduct] = useState({
     name: "",
     image: "",
-    price: 0,
+    price: "",
     description: ""
   });
+
+  async function handleSubmit(e){
+    e.preventDefault()
+    try{
+    await axios.put(`http://localhost:4001/products/${params.id}`,product)
+    navigate("/")
+    }catch(err){
+      console.error(err);    
+    }
+  }
 
   const params = useParams();
   const navigate = useNavigate()
@@ -29,8 +39,9 @@ function EditProductForm() {
   },[params.id])
 
 
+
   return (
-    <form className="product-form">
+    <form onSubmit={handleSubmit} className="product-form">
       <h1>Edit Product Form</h1>
       <div className="input-container">
         <label>
@@ -91,7 +102,7 @@ function EditProductForm() {
         </label>
       </div>
       <div className="form-actions">
-        <button onClick={()=>navigate("/")} type="submit">Update</button>
+        <button type="submit">Update</button>
       </div>
     </form>
   );

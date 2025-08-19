@@ -1,10 +1,30 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function CreateProductForm() {
 
+  const [product, setProduct] = useState({
+    name: "",
+    image: "",
+    price: "",
+    description: ""
+  });
+
   const navigate = useNavigate()
+
+  async function handleSubmit(e){
+    e.preventDefault()
+    try{
+    await axios.post('http://localhost:4001/products/',product)
+    navigate("/")
+    }catch(err){
+      console.error(err);    
+    }
+  }
+
   return (
-    <form className="product-form">
+    <form onSubmit={handleSubmit} className="product-form">
       <h1>Create Product Form</h1>
       <div className="input-container">
         <label>
@@ -12,9 +32,10 @@ function CreateProductForm() {
           <input
             id="name"
             name="name"
+            value={product.name}
             type="text"
             placeholder="Enter name here"
-            onChange={() => {}}
+            onChange={(e) => setProduct(prev => ({ ...prev, name: e.target.value }))}
           />
         </label>
       </div>
@@ -25,8 +46,9 @@ function CreateProductForm() {
             id="image"
             name="image"
             type="text"
+            value={product.image}
             placeholder="Enter image url here"
-            onChange={() => {}}
+            onChange={(e) => setProduct(prev => ({ ...prev, image: e.target.value }))}
           />
         </label>
       </div>
@@ -37,8 +59,9 @@ function CreateProductForm() {
             id="price"
             name="price"
             type="number"
+            value={product.price}
             placeholder="Enter price here"
-            onChange={() => {}}
+            onChange={(e) => setProduct(prev => ({ ...prev, price: e.target.value }))}
           />
         </label>
       </div>
@@ -50,14 +73,15 @@ function CreateProductForm() {
             name="description"
             type="text"
             placeholder="Enter description here"
-            onChange={() => {}}
+            value={product.description}
+            onChange={(e) => setProduct(prev => ({ ...prev, description: e.target.value }))}
             rows={4}
             cols={30}
           />
         </label>
       </div>
       <div className="form-actions">
-        <button onClick={()=>navigate("/")} type="submit">Create</button>
+        <button type="submit">Create</button>
       </div>
     </form>
   );
